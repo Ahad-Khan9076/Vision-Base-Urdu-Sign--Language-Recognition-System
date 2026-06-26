@@ -1,0 +1,21 @@
+sentence_id,label_idx,sentence_text
+S01,0,Aap_kaise_hain
+S012,1,kya_apne_khana_khaya
+S013,2,maaf_kijega
+S016,3,mujhe_apni_kameez_dhoni_hai
+S02,4,Chalay_jao
+S03,5,Daro_mat
+S04,6,Eid_mubarak
+S05,7,idhr_aoun
+S06,8,Kitni_deir
+S07,9,Mujhe_samajh_nahi_aati
+S08,10,Shukriya
+S09,11,Aap_ka_naam_kya_hai
+S10,12,hath_mat_lgao
+S11,13,Kya_aap_tayyar_hain
+S14,14,Mai_bemar_hoon
+S15,15,Mai_Isharoo_ki_zuban_Seekh rha_hoon
+S17,16,kya_mai_apki_madad_krsta_hoon
+S18,17,khirki_bndd_kro
+S19,18,mai_jald_hi_wapis_aounga
+S20,19,mujhe_khareedari_krne_jana_hai
