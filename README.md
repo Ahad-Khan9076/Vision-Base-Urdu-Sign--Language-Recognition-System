@@ -94,6 +94,7 @@ Stream the packed .pkl files directly into the ST-JAT training script:
 ```bash
 python3 train.py --data_dir /home/ahad/Documents/fyp_pipeline_outputs/fyp_processed_dataset/ --epochs 120 --batch_size 64
 ```
+## Citation
 
 Citation & Research Context
 This system functions as a Signer-Dependent Stratified Verification System. By introducing a 1D convolutional downsampling stage prior to the attention block, the model drops high-frequency frame jitter and filters out stationary background noise. This creates a lightweight, production-ready framework for real-time sentence recognition on edge devices.
