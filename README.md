@@ -4,34 +4,14 @@
 
 ## 🔬 Core Architectural Mechanics & Innovation
 
-Recognizing sentence-level sign language from continuous video inputs presents severe structural challenges: temporal frame redundancy, minor muscular tremors, and spatial information noise from stationary joints (e.g., hips, shoulders, and torso). 
+Recognizing sentence-level sign language from video inputs presents unique challenges: temporal frame redundancy, tracking noise from minor tremors, and spatial contamination from stationary joints (like hips or shoulders). 
 
-Legacy architectures lean heavily on Recurrent Neural Networks (LSTMs/GRUs), which suffer from memory bottlenecks across extended sequence timelines and force sequential data processing. Conversely, Vanilla Transformers track global dependencies in parallel but frequently overfit to background coordinate artifacts because their attention layers evaluate all joints with uniform structural weight.
+Legacy approaches rely on Recurrent Neural Networks (LSTMs/GRUs), which suffer from memory bottlenecks over long sequences and process frames one by one, creating significant latency. Conversely, Vanilla Transformers capture global context in parallel but often overfit to background noise because their attention mechanisms treat all joints equally.
 
-The **Spatial-Temporal Joint-Attention Transformer (ST-JAT)** solves this paradigm by injecting localized downsampling layers prior to spatial matrix self-attention, processing high-dimensional coordinate arrays across five clear operations:
-
-[Raw Input Sequences: .avi + .eaf File Elements]
-│
-▼
-Stage 1: Multi-Modal Tracking Parsing (144 Spatial Landmarks)
-│
-▼
-Stage 2: Linear Hidden Vector Projection ($hidden\_dim = 256$)
-│
-▼
-Stage 3: Multi-Tier Temporal Encoder (Conv1D Timeline Compression)
-│  └─ Halves continuous frame lengths from 60 down to 30
-▼
-Stage 4: Softmax-Filtered Joint Attention Layer (Spatial Masking)
-│  └─ Parallel Queries, Keys, Values Matrix Multiplication
-▼
-Stage 5: Stacked Transformer Encoders Block ($N_x = 2$, 4 Attention Heads)
-│
-▼
-Stage 6: Regularized GELU Classifier Head (Global Average Pooling ──> Output)
+The **Spatial-Temporal Joint-Attention Transformer (ST-JAT)** addresses these challenges through a specialized architecture that processes spatial-temporal vectors in five distinct stages:
 
 ### 1. Geometric Vectorization
-Continuous video matrices ($X_{\text{raw}} \in \mathbb{R}^{B \times T \times C}$) are extracted frame-by-frame via a localized computer vision pipeline. The upper body skeleton provides 11 tracking points ($11 \times [x, y] = 22$), while both hands provide 21 localized joints each ($21 \times 3 \times 2 = 126$), combining to form a robust **144-dimensional feature vector per frame**.
+Continuous video matrices ($X_{\text{raw}} \in \mathbb{R}^{B \times T \times C}$) are extracted frame-by-frame via a specialized computer vision pipeline. The upper body skeleton provides 11 tracking points ($11 \times [x, y] = 22$), while both hands provide 21 localized joints each ($21 \times 3 \times 2 = 126$), combining to form a robust **144-dimensional feature vector per frame**.
 
 ### 2. Multi-Tier Temporal Encoder Block (Conv1D Downsampling)
 Before computing global dependencies, the tensor is permuted to a channel-first layout ($B \times 256 \times 60$) and routed through a dual-pathway Convolutional Network:
@@ -48,6 +28,19 @@ The isolated 30-step sequence is passed through a deep multi-head self-attention
 
 ### 5. Regularized Classifier Head
 The final hidden matrices are condensed into a 256-dimensional vector using Global Average Pooling (GAP). This representation passes through dense layers utilizing **GELU (Gaussian Error Linear Unit)** activations and a 30% dropout regularizer to generate raw multi-class probability scores across the 20 target sentence classes.
+
+---
+
+## 📊 Empirical Performance & Benchmark Suite
+
+The ST-JAT network was evaluated under identical training baselines (**120 Epochs**, **Batch Size 64**, **Cosine Annealing Learning Rate Scheduler**) against traditional sequential frameworks:
+
+| Architecture Profile | Parameter Footprint | Peak Val Accuracy | Global Min Val Loss | Inference Latency | Convergence Epoch |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Baseline LSTM** | 38 MB | 96.97% | 0.1311 | 42.1 ms | ~88 (Slow tracking) |
+| **CNN-LSTM Hybrid** | 54 MB | 98.48% | 0.0843 | 28.4 ms | ~65 (Volatile boundary) |
+| **Vanilla Transformer**| 24 MB | 99.49% | 0.0455 | 18.2 ms | ~42 (Noise sensitive) |
+| **Proposed ST-JAT** | **16 MB** | **99.75%** | **0.0309** | **11.5 ms** | **< 35 (Ultra-fast)** |
 
 ---
 
@@ -74,5 +67,4 @@ The final hidden matrices are condensed into a 256-dimensional vector using Glob
 ├── collect_sign_dataset.py              # Independent feature extraction run environment
 ├── README.md                            # Comprehensive system documentation
 └── requirements.txt                     # Complete software package requirement definitions
-
-📊 Empirical Performance & Benchmark SuiteThe ST-JAT network was evaluated under identical training baselines (120 Epochs, Batch Size 64, Cosine Annealing Learning Rate Scheduler) against traditional sequential frameworks:Architecture ProfileParameter FootprintPeak Val AccuracyGlobal Min Val LossInference LatencyConvergence EpochBaseline LSTM38 MB96.97%0.131142.1 ms~88 (Slow tracking)CNN-LSTM Hybrid54 MB98.48%0.084328.4 ms~65 (Volatile boundary)Vanilla Transformer24 MB99.49%0.045518.2 ms~42 (Noise sensitive)Proposed ST-JAT16 MB99.75%0.030911.5 ms< 35 (Ultra-fast)
+```
