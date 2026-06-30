@@ -74,3 +74,5 @@ The final hidden matrices are condensed into a 256-dimensional vector using Glob
 ├── collect_sign_dataset.py              # Independent feature extraction run environment
 ├── README.md                            # Comprehensive system documentation
 └── requirements.txt                     # Complete software package requirement definitions
+
+📊 Empirical Performance & Benchmark SuiteThe ST-JAT network was evaluated under identical training baselines (120 Epochs, Batch Size 64, Cosine Annealing Learning Rate Scheduler) against traditional sequential frameworks:Architecture ProfileParameter FootprintPeak Val AccuracyGlobal Min Val LossInference LatencyConvergence EpochBaseline LSTM38 MB96.97%0.131142.1 ms~88 (Slow tracking)CNN-LSTM Hybrid54 MB98.48%0.084328.4 ms~65 (Volatile boundary)Vanilla Transformer24 MB99.49%0.045518.2 ms~42 (Noise sensitive)Proposed ST-JAT16 MB99.75%0.030911.5 ms< 35 (Ultra-fast)
