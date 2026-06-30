@@ -47,9 +47,7 @@ The ST-JAT network was evaluated under identical training baselines (**120 Epoch
 ## 📂 Repository Layout
 
 ├── build_eaf_avi_pkl.py         # Recursive preprocessing pipeline for .eaf/.avi files 
-
 ├── model.py                    # Modular ST-JAT PyTorch architecture definition
-
 ├── train.py                    # Production training loop with Cosine Annealing
 ├── requirements.txt            # Python ecosystem dependency definitions
 └── README.md                   # Complete system documentation
