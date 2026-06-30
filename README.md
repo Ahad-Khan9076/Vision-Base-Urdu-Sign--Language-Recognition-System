@@ -81,3 +81,27 @@ source /home/ahad/Documents/fyp_dataset/env_urdu_sl/bin/activate
 
 # Install core tensor and linguistic parsing packages
 pip install pympi-ling opencv-python scikit-learn tqdm numpy pandas torch torchinfo cvzone
+```
+### 2. High-Speed Binary Serialization (.pkl)
+Compile raw multi-modal datasets (.avi videos + ELAN .eaf files) across all 20 sentence subfolders into highly optimized training blocks:
+```bash
+python3 /home/ahad/Documents/fyp_dataset/build_eaf_avi_pkl.py
+```
+This script balances data splits (80% Train, 20% Val), standardizes lengths, and outputs binary files directly to /home/user/Documents/fyp_pipeline_outputs/fyp_processed_dataset/.
+
+### 3. Model Training Sequence
+Stream the packed .pkl files directly into the ST-JAT training script:
+```bash
+python3 train.py --data_dir /home/ahad/Documents/fyp_pipeline_outputs/fyp_processed_dataset/ --epochs 120 --batch_size 64
+```
+
+Citation & Research Context
+This system functions as a Signer-Dependent Stratified Verification System. By introducing a 1D convolutional downsampling stage prior to the attention block, the model drops high-frequency frame jitter and filters out stationary background noise. This creates a lightweight, production-ready framework for real-time sentence recognition on edge devices.
+
+@ARTICLE{UrduSLTransformer2026,
+  author  = {Ahad Khan},
+  title   = {Spatial-Temporal Joint-Attention Transformer (ST-JAT) for Vision-Based Urdu Sign Language Recognition System},
+  journal = {GitHub Repository Archive},
+  year    = {2026},
+  url     = {[https://github.com/Ahad-Khan9076/Vision-Base-Urdu-Sign--Language-Recognition-System](https://github.com/Ahad-Khan9076/Vision-Base-Urdu-Sign--Language-Recognition-System)}
+}
