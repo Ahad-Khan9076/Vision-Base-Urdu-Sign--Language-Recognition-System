@@ -2,6 +2,22 @@
 
 ---
 
+## 📸 Project Visual Assets & Multi-Modal Pipeline
+
+### 1. Data Collection Phase (20 Sentences | 2,000 High-Resolution Videos)
+We collected a localized corpus containing 2,000 distinct video captures covering 20 isolated Urdu Sign Language sentences. Each expression was sampled across varying signer dynamics to enforce tracking variance.
+
+![Urdu Sign Language Data Collection Video Baseline](assets/dataset_collection.mp4)
+*Figure 1: Real-time preview of our localized Urdu Sign Language dataset video capture environment.*
+
+### 2. Multi-Modal Annotation & Preprocessing via ELAN
+Every raw `.avi` video sequence was mapped to microsecond bounds and labeled using ELAN (`.eaf`) linguistic tools to establish spatial-temporal text alignments.
+
+![ELAN Microsecond Annotation Workspace](assets/elan_image.png)
+*Figure 2: Annotation layout and tier transcription bounds inside the ELAN workspace backend.*
+
+---
+
 ## 🔬 Core Architectural Mechanics & Innovation
 
 Recognizing sentence-level sign language from video inputs presents unique challenges: temporal frame redundancy, tracking noise from minor tremors, and spatial contamination from stationary joints (like hips or shoulders). 
@@ -12,6 +28,9 @@ The **Spatial-Temporal Joint-Attention Transformer (ST-JAT)** addresses these ch
 
 ### 1. Geometric Vectorization
 Continuous video matrices ($X_{\text{raw}} \in \mathbb{R}^{B \times T \times C}$) are extracted frame-by-frame via a specialized computer vision pipeline. The upper body skeleton provides 11 tracking points ($11 \times [x, y] = 22$), while both hands provide 21 localized joints each ($21 \times 3 \times 2 = 126$), combining to form a robust **144-dimensional feature vector per frame**.
+
+![Geometric Hand Tracking and Pose Landmarking Pipeline](YOUR_TRACKING_SCREENSHOT_LINK_HERE)
+*Figure 3: Live landmark tracking overlay isolating active hand joint configurations and skeletal keypoints.*
 
 ### 2. Multi-Tier Temporal Encoder Block (Conv1D Downsampling)
 Before computing global dependencies, the tensor is permuted to a channel-first layout ($B \times 256 \times 60$) and routed through a dual-pathway Convolutional Network:
@@ -29,19 +48,8 @@ The isolated 30-step sequence is passed through a deep multi-head self-attention
 ### 5. Regularized Classifier Head
 The final hidden matrices are condensed into a 256-dimensional vector using Global Average Pooling (GAP). This representation passes through dense layers utilizing **GELU (Gaussian Error Linear Unit)** activations and a 30% dropout regularizer to generate raw multi-class probability scores across the 20 target sentence classes.
 
----
-
-## 📊 Empirical Performance & Benchmark Suite
-
-The ST-JAT network was evaluated under identical training baselines (**120 Epochs**, **Batch Size 64**, **Cosine Annealing Learning Rate Scheduler**) against traditional sequential frameworks:
-
-| Architecture Profile | Parameter Footprint | Peak Val Accuracy | Global Min Val Loss | Inference Latency | Convergence Epoch |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Baseline LSTM** | 38 MB | 96.97% | 0.1311 | 42.1 ms | ~88 (Slow tracking) |
-| **CNN-LSTM Hybrid** | 54 MB | 98.48% | 0.0843 | 28.4 ms | ~65 (Volatile boundary) |
-| **Vanilla Transformer**| 24 MB | 99.49% | 0.0455 | 18.2 ms | ~42 (Noise sensitive) |
-| **Proposed ST-JAT** | **16 MB** | **99.75%** | **0.0309** | **11.5 ms** | **< 35 (Ultra-fast)** |
-
+![ST-JAT Neural Network Layer Architecture Diagram](YOUR_ARCHITECTURE_DIAGRAM_LINK_HERE)
+*Figure 4: Complete layer-by-layer tensor shape routing and mathematical attention blocks mapping within ST-JAT.*
 ---
 
 ## 📂 Repository Layout
@@ -108,14 +116,3 @@ This system functions as a Signer-Dependent Stratified Verification System. By i
   url     = {https://github.com/Ahad-Khan9076/Vision-Base-Urdu-Sign--Language-Recognition-System}
 }
 ```
-
----
-
-## 🚀 Step-by-Step Guide: How to Push This to GitHub
-
-Follow these terminal steps on your local computer to update your repository:
-
-### Step 1: Open Your Project Folder
-Open your terminal and navigate to your local Git directory:
-```bash
-cd /home/ahad/Documents/fyp_dataset
