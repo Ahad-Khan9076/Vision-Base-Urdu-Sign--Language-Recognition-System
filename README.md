@@ -68,3 +68,16 @@ The ST-JAT network was evaluated under identical training baselines (**120 Epoch
 ├── README.md                            # Comprehensive system documentation
 └── requirements.txt                     # Complete software package requirement definitions
 ```
+
+---
+
+## 🛠️ Local Implementation Quickstart
+
+### 1. Environment Activation & Initialization
+Isolate your packages within your active local virtual environment:
+```bash
+# Activate the Urdu Sign Language environment
+source /home/ahad/Documents/fyp_dataset/env_urdu_sl/bin/activate
+
+# Install core tensor and linguistic parsing packages
+pip install pympi-ling opencv-python scikit-learn tqdm numpy pandas torch torchinfo cvzone
