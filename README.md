@@ -122,7 +122,7 @@ This script balances data splits (80% Train, 20% Val), standardizes lengths, and
 ### 3. Model Training Sequence
 Stream the packed .pkl files directly into the ST-JAT training script:
 ```bash
-python3 train.py --data_dir /home/ahad/Documents/fyp_pipeline_outputs/fyp_processed_dataset/ --epochs 120 --batch_size 64
+python3 train.py --data_dir /home/user/Documents/fyp_pipeline_outputs/fyp_processed_dataset/ --epochs 120 --batch_size 64
 ```
 ## Citation
 
