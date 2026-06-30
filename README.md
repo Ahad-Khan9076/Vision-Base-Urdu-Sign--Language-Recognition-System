@@ -27,10 +27,7 @@ Legacy approaches rely on Recurrent Neural Networks (LSTMs/GRUs), which suffer f
 The **Spatial-Temporal Joint-Attention Transformer (ST-JAT)** addresses these challenges through a specialized architecture that processes spatial-temporal vectors in five distinct stages:
 
 ### 1. Geometric Vectorization
-Continuous video matrices ($X_{\text{raw}} \in \mathbb{R}^{B \times T \times C}$) are extracted frame-by-frame via a specialized computer vision pipeline. The upper body skeleton provides 11 tracking points ($11 \times [x, y] = 22$), while both hands provide 21 localized joints each ($21 \times 3 \times 2 = 126$), combining to form a robust **144-dimensional feature vector per frame**.
-
-![Geometric Hand Tracking and Pose Landmarking Pipeline](YOUR_TRACKING_SCREENSHOT_LINK_HERE)
-*Figure 3: Live landmark tracking overlay isolating active hand joint configurations and skeletal keypoints.*
+Continuous video matrices ($X_{\text{raw}} \in \mathbb{R}^{B \times T \times C}$) are extracted frame-by-frame via a localized computer vision pipeline. The upper body skeleton provides 11 tracking points ($11 \times [x, y] = 22$), while both hands provide 21 localized joints each ($21 \times 3 \times 2 = 126$), combining to form a robust **144-dimensional feature vector per frame**.
 
 ### 2. Multi-Tier Temporal Encoder Block (Conv1D Downsampling)
 Before computing global dependencies, the tensor is permuted to a channel-first layout ($B \times 256 \times 60$) and routed through a dual-pathway Convolutional Network:
@@ -48,8 +45,9 @@ The isolated 30-step sequence is passed through a deep multi-head self-attention
 ### 5. Regularized Classifier Head
 The final hidden matrices are condensed into a 256-dimensional vector using Global Average Pooling (GAP). This representation passes through dense layers utilizing **GELU (Gaussian Error Linear Unit)** activations and a 30% dropout regularizer to generate raw multi-class probability scores across the 20 target sentence classes.
 
-![ST-JAT Neural Network Layer Architecture Diagram](YOUR_ARCHITECTURE_DIAGRAM_LINK_HERE)
-*Figure 4: Complete layer-by-layer tensor shape routing and mathematical attention blocks mapping within ST-JAT.*
+![ST-JAT Neural Network Layer Architecture Diagram](assets/architecture.jpeg)
+*Figure 3: Complete layer-by-layer tensor shape routing and mathematical attention blocks mapping within ST-JAT.*
+
 ---
 
 ## 📂 Repository Layout
